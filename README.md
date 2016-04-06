@@ -2,6 +2,8 @@
 This program can download all playlist from youtube url.
 It is easy to download..
 
+dependancy : you need youtube API key..
+             write it in mainprogram.py
 step 1: $git clone https://github.com/sulabh9999/youtube_downloader.git
 
 step 2: $cd youtube_downloader
