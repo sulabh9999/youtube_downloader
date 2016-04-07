@@ -25,7 +25,7 @@ class DownloadVideo:
           data = responce.read()
           info = urlparse.parse_qs(data) 
           self.title = info['title'][0]
-          print 'Title: '+self.title+'...',
+          #print 'Title: '+self.title+'...',
           stream_map = info['url_encoded_fmt_stream_map'][0]         
           video_info = stream_map.split(",")
           for video in video_info:
@@ -43,8 +43,7 @@ class DownloadVideo:
                             my_file.write(buffer)
                             done += 1024
                             percent = done*100/length
-                            #print '\r%d ' %(percent),
-                            print '\rTitle :%s.... %d%%' %(self.title,percent),
+                            print '\r%s.... %d%%' %(self.title,percent),
                             buffer = responce.read(1024)
                     break
 
