@@ -3,7 +3,7 @@ import urlparse
 PLAYLIST={}
 VIDEOLIST={}
 CHANNEL_ID=''
-API_KEY='AIzaSyCCxkwVyeibZFnIRdpclyxr5FMTGlxHztg'
+API_KEY='write your api key here'
 URL='https://www.googleapis.com/youtube/v3/playlists?'
 URL_playlist='https://www.googleapis.com/youtube/v3/playlistItems?'
 NEXTPAGE=''
