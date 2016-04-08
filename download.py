@@ -7,7 +7,7 @@ class DownloadVideo:
           #self.responce = ''
           self.title = ''
 
-      def download(self,video_id,video_list_path):
+      def download(self,counter,video_id,video_list_path):
           '''
           try:
               open(video_list_path, 'r')
@@ -43,9 +43,10 @@ class DownloadVideo:
                             my_file.write(buffer)
                             done += 1024
                             percent = done*100/length
-                            print '\r%s.... %d%%' %(self.title,percent),
+                            print '\r%s: %s.... %d%%' %(counter,self.title,percent),
                             buffer = responce.read(1024)
                     break
+          print ''
 
 #a=DownloadVideo()
 #a.download('YCcAE2SCQ6k')

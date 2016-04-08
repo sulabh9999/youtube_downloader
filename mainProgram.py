@@ -3,7 +3,7 @@ import urlparse
 PLAYLIST={}
 VIDEOLIST={}
 CHANNEL_ID=''
-API_KEY='write your api key here'
+API_KEY='write your API here'
 URL='https://www.googleapis.com/youtube/v3/playlists?'
 URL_playlist='https://www.googleapis.com/youtube/v3/playlistItems?'
 NEXTPAGE=''
@@ -53,7 +53,7 @@ def main(channel_url,video_list_storage_path):
    CHANNEL_ID =  urlparse.urlparse(channel_url).path.split('/')[-1]
    if CHANNEL_ID == 'watch':
        video_id = channel_url.split('=')[-1]
-       tmpobj.download(video_id,video_list_storage_path)
+       tmpobj.download(1,video_id,video_list_storage_path)
 
 
    GetPlayListFromURL(URL+'part=snippet&channelId='+CHANNEL_ID+'&key='+API_KEY)
@@ -84,12 +84,13 @@ def main(channel_url,video_list_storage_path):
        print 'ok bye..'
        sys.exit()
    for video_index in range( int(selected_video[0]),int(selected_video[1])+1):
+          print str(video_index)+': ',
           if video_index == 0:
               for all_video in VIDEOLIST.keys():
-                 tmpobj.download(str(all_video),video_list_storage_path)          
+                 tmpobj.download(video_index,str(all_video),video_list_storage_path)          
           else:   
               video_id = str(list(VIDEOLIST.keys())[video_index-1])
-              tmpobj.download(video_id,video_list_storage_path)
+              tmpobj.download(video_index,video_id,video_list_storage_path)
   
        
 
