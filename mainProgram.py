@@ -3,10 +3,30 @@ import urlparse
 PLAYLIST={}
 VIDEOLIST={}
 CHANNEL_ID=''
-API_KEY='write your API here'
+API_KEY=''
 URL='https://www.googleapis.com/youtube/v3/playlists?'
 URL_playlist='https://www.googleapis.com/youtube/v3/playlistItems?'
+URL_get_video_only = 'https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&maxResults=50'
 NEXTPAGE=''
+
+def GetVideoDirectly(url): 
+    data = json.load(urllib2.urlopen(url))
+    data_ =   data["items"]
+    #print d
+
+    for item in data_:
+       try:
+         VIDEOLIST[item['id']['videoId']] = item['snippet']['title']
+       except KeyError:
+         pass
+
+    try:
+       if data['nextPageToken']:
+          NEXTPAGE = data['nextPageToken'] 
+          GetVideoDirectly(URL_get_video_only+'&pageToken='+NEXTPAGE+'&part=snippet&channelId='+CHANNEL_ID+'&key='+API_KEY)    
+    except KeyError:
+          pass
+
 
 
 
@@ -21,7 +41,7 @@ def GetPlayListFromURL(url):
           NEXTPAGE = data['nextPageToken'] 
           GetPlayListFromURL(URL+'pageToken='+NEXTPAGE+'&part=snippet&channelId='+CHANNEL_ID+'&key='+API_KEY)    
     except KeyError:
-          print 'error ...'
+          pass
 
 
 
@@ -61,9 +81,13 @@ def main(channel_url,video_list_storage_path):
    for item in PLAYLIST.values():
       print '%d: %s'%(count,item)
       count += 1
+ 
+   print '%d: TO GET COMPLETE VIDEO LIST FROM CHANNEL...'%(count)
    print 'Enter choise from playlist:',
    try:
          selectplaylist = input()
+         if (selectplaylist < 0) and (selectplaylist > count):
+            print 'Invalid input'
    except (KeyboardInterrupt,SyntaxError):
          print 'Wrong Input or Some Error occured...'
          sys.exit()
@@ -71,8 +95,14 @@ def main(channel_url,video_list_storage_path):
 
 
 
-   selected_playlist = str(list(PLAYLIST.keys())[selectplaylist-1])
-   GetVideoListFromPlayList(URL_playlist+'part=snippet&playlistId='+selected_playlist+'&key='+API_KEY,selected_playlist)
+   
+   if selectplaylist == count:
+      GetVideoDirectly(URL_get_video_only+'&channelId='+CHANNEL_ID+'&key='+API_KEY)
+   else:
+      selected_playlist = str(list(PLAYLIST.keys())[selectplaylist-1])
+      GetVideoListFromPlayList(URL_playlist+'part=snippet&playlistId='+selected_playlist+'&key='+API_KEY,selected_playlist)
+
+
    count = 1
    for item in VIDEOLIST.values():
       print '%d: %s'%(count,item)
